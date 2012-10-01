@@ -1,8 +1,7 @@
 package dk.statsbiblioteket.medieplatform.contentresolver.model;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class Resource {
     /** The type of the resource. E.g. thumbnail, preview, presentationcopy, or original. */
     private String type;
     /** The urls where the resource is available (usually one, but may be more for e.g. thumbnails). */
-    private List<URL> urls;
+    private List<URI> uris;
 
     /**
      * Get the type of the resource.
@@ -40,16 +39,16 @@ public class Resource {
      * @return The urls where the resource is available (usually one, but may be more for e.g. thumbnails).
      */
     @XmlElement(name = "url", namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
-    public List<URL> getUrls() {
-        return new ArrayList<URL>(urls);
+    public List<URI> getUris() {
+        return new ArrayList<URI>(uris);
     }
 
     /**
      * Set the URLs of the resource.
      *
-     * @param urls The urls where the resource is available (usually one, but may be more for e.g. thumbnails).
+     * @param uris The urls where the resource is available (usually one, but may be more for e.g. thumbnails).
      */
-    public void setUrls(List<URL> urls) {
-        this.urls = new ArrayList<URL>(urls);
+    public void setUris(List<URI> uris) {
+        this.uris = new ArrayList<URI>(uris);
     }
 }

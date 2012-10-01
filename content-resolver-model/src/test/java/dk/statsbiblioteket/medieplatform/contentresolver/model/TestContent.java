@@ -13,7 +13,7 @@ import org.junit.Test;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
-import java.net.URL;
+import java.net.URI;
 import java.util.Arrays;
 
 /**
@@ -103,11 +103,11 @@ public class TestContent {
         Content content = new Content();
         Resource resource = new Resource();
         resource.setType("test");
-        resource.setUrls(Arrays.asList(new URL("http://example.com/1"), new URL("http://example.com/2")));
+        resource.setUris(Arrays.asList(new URI("http://example.com/1"), new URI("http://example.com/2")));
         content.addResource(resource);
         Resource resource2 = new Resource();
         resource2.setType("test2");
-        resource2.setUrls(Arrays.asList(new URL("http://example.com/3")));
+        resource2.setUris(Arrays.asList(new URI("http://example.com/3")));
         content.addResource(resource2);
         return content;
     }
