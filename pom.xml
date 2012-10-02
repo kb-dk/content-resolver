@@ -15,6 +15,12 @@
     <packaging>pom</packaging>
     <name>Content Resolver</name>
 
+    <parent>
+        <groupId>dk.statsbiblioteket.sbprojects</groupId>
+        <artifactId>sbprojects-parent</artifactId>
+        <version>3</version>
+    </parent>
+
     <description>Infrastructure for resolving content dissemination from PIDs</description>
     <url>https://sbforge.org/display/INFRA</url>
 
