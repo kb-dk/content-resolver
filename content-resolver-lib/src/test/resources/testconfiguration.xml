@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configurableContentResolverConfiguration>
+    <directoryBasedContentResolverConfigurations>
+        <type>preview</type>
+        <baseDirectory>src/test/resources/previews</baseDirectory>
+        <characterDirs>4</characterDirs>
+        <filenameRegexPattern>%s\.preview\.(flv)|(mp3)</filenameRegexPattern>
+        <uriPattern>rtsp://example.com/bart/preview/%s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
+    <directoryBasedContentResolverConfigurations>
+        <type>thumbnails</type>
+        <baseDirectory>src/test/resources/thumbnails</baseDirectory>
+        <characterDirs>4</characterDirs>
+        <filenameRegexPattern>%s\.snapshot\..*\.jpeg</filenameRegexPattern>
+        <uriPattern>http://example.com/bart/thumbnail/%2$s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
+</configurableContentResolverConfiguration>

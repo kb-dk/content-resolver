@@ -5,17 +5,11 @@ import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 import java.io.File;
 import java.util.regex.Pattern;
 
-/**
- * Configuration for a directory based content resolver.
- */
+/** ConfigurableContentResolverConfiguration for a directory based content resolver. */
 public class DirectoryBasedContentResolverConfiguration {
-    /**
-     * The type of content resolved. See {@link Resource#getType()}.
-     */
+    /** The type of content resolved. See {@link Resource#getType()}. */
     private String type;
-    /**
-     * Base directory for the content resolved by this resolver.
-     */
+    /** Base directory for the content resolved by this resolver. */
     private File baseDirectory;
     /**
      * Number of characters to use for splitting content into directories. Example: if the is 2, the file "hello.txt"
@@ -37,4 +31,44 @@ public class DirectoryBasedContentResolverConfiguration {
      * http://example.com/resolve/88144228-38ce-4f84-9ea4-115caab84297.mpg.
      */
     private String uriPattern;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public File getBaseDirectory() {
+        return baseDirectory;
+    }
+
+    public void setBaseDirectory(File baseDirectory) {
+        this.baseDirectory = baseDirectory;
+    }
+
+    public int getCharacterDirs() {
+        return characterDirs;
+    }
+
+    public void setCharacterDirs(int characterDirs) {
+        this.characterDirs = characterDirs;
+    }
+
+    public String getFilenameRegexPattern() {
+        return filenameRegexPattern;
+    }
+
+    public void setFilenameRegexPattern(String filenameRegexPattern) {
+        this.filenameRegexPattern = filenameRegexPattern;
+    }
+
+    public String getUriPattern() {
+        return uriPattern;
+    }
+
+    public void setUriPattern(String uriPattern) {
+        this.uriPattern = uriPattern;
+    }
 }
