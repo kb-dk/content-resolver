@@ -13,6 +13,92 @@
         <module>content-resolver-service</module>
     </modules>
     <packaging>pom</packaging>
+    <name>Content Resolver</name>
+
+    <description>Infrastructure for resolving content dissemination from PIDs</description>
+    <url>https://sbforge.org/display/INFRA</url>
+
+    <organization>
+        <name>The State and University Library, Denmark</name>
+        <url>http://statsbiblioteket.dk</url>
+    </organization>
+
+    <repositories>
+        <repository>
+            <id>sbprojects-nexus</id>
+            <url>https://sbprojects.statsbiblioteket.dk/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <scm>
+        <url>https://github.com/statsbiblioteket/content-resolver</url>
+        <connection>scm:git:git@github.com/statsbiblioteket/content-resolver.git</connection>
+        <developerConnection>scm:git:git@github.com:statsbiblioteket/content-resolver.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Kåre Fiedler Christiansen</name>
+            <email>kfc@statsbiblioteket.dk</email>
+            <organization>The State and University Library, Denmark</organization>
+            <organizationUrl>http://www.statsbiblioteket.dk</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <inceptionYear>2012</inceptionYear>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://sbforge.org/jira/browse/INFRA</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://sbforge.org/jenkins/</url>
+    </ciManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <generateBundle>true</generateBundle>
+                    <failIfWarning>true</failIfWarning>
+                    <useMissingFile>true</useMissingFile>
+                    <extraExtensions>
+                        <xsd>xml</xsd>
+                    </extraExtensions>
+                    <licenseName>apache_v2</licenseName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <debug>true</debug>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.2.2</version>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
