@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configurableContentResolverConfiguration>
+    <directoryBasedContentResolverConfigurations>
+        <type>files</type>
+        <baseDirectory>/</baseDirectory>
+        <characterDirs>0</characterDirs>
+        <filenameRegexPattern>%s</filenameRegexPattern>
+        <uriPattern>file:///%s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
+</configurableContentResolverConfiguration>
