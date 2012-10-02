@@ -32,10 +32,25 @@
                 <version>1.9.1</version>
             </dependency>
             <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-core</artifactId>
+                <version>1.9.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-bundle</artifactId>
+                <version>1.9.1</version>
+            </dependency>
+            <dependency>
                 <groupId>net.sf.json-lib</groupId>
                 <artifactId>json-lib</artifactId>
                 <classifier>jdk15</classifier>
                 <version>2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>catalina</artifactId>
+                <version>6.0.29</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
