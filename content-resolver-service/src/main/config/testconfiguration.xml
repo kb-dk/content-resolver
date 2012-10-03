@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  #%L
+  content-resolver-service
+  %%
+  Copyright (C) 2012 The State and University Library, Denmark
+  %%
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  #L%
+  -->
+
+<!--
+    /**
+     * The type of content resolved. See {@link Resource#getType()}.
+     */
+    private final String type;
+    /**
+     * Base directory for the content resolved by this resolver.
+     */
+    private final File baseDirectory;
+    /**
+     * Number of characters to use for splitting content into directories. Example: if the is 2, the file "hello.txt"
+     * will be in the path "h/e/hello.txt".
+     */
+    private final int characterDirs;
+    /**
+     * Pattern used for turning the pid into a file name regex. The pattern uses the format of
+     * {@link java.util.Formatter}, where the pid string is inserted as first parameter. The result should be a
+     * regex {@link Pattern} that files should match to be included. Example: "%s-[0-9]*.mpg"
+     */
+    private final String filenameRegexPattern;
+    /**
+     * The URI where the content may be resolved.  The pattern uses the format of {@link java.util.Formatter},
+     * where the relative full file path is inserted as first parameter, and the file name is inserted as the second
+     * parameter. E.g. http://example.com/resolve/%s may turn into
+     * http://example.com/resolve/8/8/1/4/88144228-38ce-4f84-9ea4-115caab84297.mpg whereas
+     * http://example.com/resolve/%2$s may turn into
+     * http://example.com/resolve/88144228-38ce-4f84-9ea4-115caab84297.mpg.
+     */
+    private final String uriPattern;
+-->
+<configurableContentResolverConfiguration>
+    <directoryBasedContentResolverConfigurations>
+        <!--The type of content resolved. See {@link Resource#getType()}.-->
+        <type>preview</type>
+        <!--Base directory for the content resolved by this resolver.-->
+        <baseDirectory>src/test/resources/previews</baseDirectory>
+        <!--Number of characters to use for splitting content into directories. Example: if the is 2, the file
+        "hello.txt" will be in the path "h/e/hello.txt".-->
+        <characterDirs>4</characterDirs>
+        <!--Pattern used for turning the pid into a file name regex. The pattern uses the format of
+        java.util.Formatter}, where the pid string is inserted as first parameter. The result should be a Java regex
+        that files should match to be included. Example: "%s-[0-9]*.mpg"-->
+        <filenameRegexPattern>%s\.preview\.(flv)|(mp3)</filenameRegexPattern>
+        <!--The URI where the content may be resolved.  The pattern uses the format of {@link java.util.Formatter},
+             where the relative full file path is inserted as first parameter, and the file name is inserted as the
+             second parameter. E.g.
+             http://example.com/resolve/%s may turn into
+             http://example.com/resolve/8/8/1/4/88144228-38ce-4f84-9ea4-115caab84297.mpg whereas
+             http://example.com/resolve/%2$s may turn into
+             http://example.com/resolve/88144228-38ce-4f84-9ea4-115caab84297.mpg.-->
+        <uriPattern>rtsp://example.com/bart/preview/%s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
+    <directoryBasedContentResolverConfigurations>
+        <type>thumbnails</type>
+        <baseDirectory>src/test/resources/thumbnails</baseDirectory>
+        <characterDirs>4</characterDirs>
+        <filenameRegexPattern>%s\.snapshot\..*\.jpeg</filenameRegexPattern>
+        <uriPattern>http://example.com/bart/thumbnail/%2$s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
+</configurableContentResolverConfiguration>
