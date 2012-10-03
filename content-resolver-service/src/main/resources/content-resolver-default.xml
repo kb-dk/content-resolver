@@ -22,7 +22,7 @@
 <configurableContentResolverConfiguration>
     <directoryBasedContentResolverConfigurations>
         <type>files</type>
-        <baseDirectory>/</baseDirectory>
+        <baseDirectory>.</baseDirectory>
         <characterDirs>0</characterDirs>
         <filenameRegexPattern>%s</filenameRegexPattern>
         <uriPattern>file:///%s</uriPattern>
