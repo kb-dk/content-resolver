@@ -29,7 +29,7 @@ import java.util.List;
  * A single content resource.
  */
 public class Resource {
-    /** The type of the resource. E.g. thumbnail, preview, presentationcopy, or original. */
+    /** The type of the resource. E.g. thumbnail, preview, streaming, or original. */
     private String type;
     /** The urls where the resource is available (usually one, but may be more for e.g. thumbnails). */
     private List<URI> uris;
@@ -37,7 +37,7 @@ public class Resource {
     /**
      * Get the type of the resource.
      *
-     * @return The type of the resource. E.g. thumbnail, preview, presentationcopy, or original.
+     * @return The type of the resource. E.g. thumbnail, preview, streaming, or original.
      * */
     @XmlElement(namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
     public String getType() {
@@ -47,7 +47,7 @@ public class Resource {
     /**
      * Set the type of the resource.
      *
-     * @param type The type of the resource. E.g. thumbnail, preview, presentationcopy, or original.
+     * @param type The type of the resource. E.g. thumbnail, preview, streaming, or original.
      * */
     public void setType(String type) {
         this.type = type;
