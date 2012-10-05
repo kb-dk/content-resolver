@@ -21,15 +21,15 @@
 
 <configurableContentResolverConfiguration>
     <directoryBasedContentResolverConfigurations>
-        <!--The type of content resolved. See {@link Resource#getType()}.-->
+        <!--The type of content resolved.  E.g. thumbnail, preview, streaming, or original.-->
         <type>preview</type>
         <!--Base directory for the content resolved by this resolver.-->
         <baseDirectory>src/test/resources/previews</baseDirectory>
-        <!--Number of characters to use for splitting content into directories. Example: if the is 2, the file
+        <!--Number of characters to use for splitting content into directories. Example: if this is 2, the file
         "hello.txt" will be in the path "h/e/hello.txt".-->
         <characterDirs>4</characterDirs>
         <!--Pattern used for turning the pid into a file name regex. The pattern uses the format of
-        java.util.Formatter}, where the pid string is inserted as first parameter. The result should be a Java regex
+        java.util.Formatter, where the pid string is inserted as first parameter. The result should be a Java regex
         that files should match to be included. Example: "%s-[0-9]*.mpg"-->
         <filenameRegexPattern>%s\.preview\.(flv)|(mp3)</filenameRegexPattern>
         <!--The URI where the content may be resolved.  The pattern uses the format of {@link java.util.Formatter},
