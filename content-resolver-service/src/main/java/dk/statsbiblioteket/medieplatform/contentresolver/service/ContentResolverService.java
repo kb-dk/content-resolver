@@ -37,8 +37,6 @@ public class ContentResolverService implements ContentResolver {
     private final ContentResolver contentResolver;
 
     public ContentResolverService() {
-
-        //TODO initialise content resolver from configuration.
         this.contentResolver = new ConfigurableContentResolver();
     }
 
@@ -52,6 +50,9 @@ public class ContentResolverService implements ContentResolver {
     @Path("content/{pid}")
     @Produces({"text/xml", "application/json"})
     public Content getContent(@PathParam("pid") String pid) {
+        if (pid.contains(":")) {
+            pid = pid.substring(pid.indexOf(':') + 1);
+        }
         return contentResolver.getContent(pid);
     }
 }
