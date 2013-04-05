@@ -51,6 +51,7 @@ public class ConfigurableContentResolver implements ContentResolver {
      */
     public ConfigurableContentResolver(String configFile) {
         ConfigurableContentResolverConfiguration configuration = loadFile(new File(configFile));
+
         List<ContentResolver> directoryBasedContentResolvers = new ArrayList<ContentResolver>();
         for (DirectoryBasedContentResolverConfiguration directoryBasedContentResolverConfiguration : configuration
                 .getDirectoryBasedContentResolverConfigurations()) {

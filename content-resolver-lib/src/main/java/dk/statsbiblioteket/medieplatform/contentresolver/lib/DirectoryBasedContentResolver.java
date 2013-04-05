@@ -40,21 +40,25 @@ public class DirectoryBasedContentResolver implements ContentResolver {
      * The type of content resolved. See {@link Resource#getType()}.
      */
     private final String type;
+
     /**
      * Base directory for the content resolved by this resolver.
      */
     private final File baseDirectory;
+
     /**
      * Number of characters to use for splitting content into directories. Example: if the is 2, the file "hello.txt"
      * will be in the path "h/e/hello.txt".
      */
     private final int characterDirs;
+
     /**
      * Pattern used for turning the pid into a file name regex. The pattern uses the format of
      * {@link java.util.Formatter}, where the pid string is inserted as first parameter. The result should be a
      * regex {@link Pattern} that files should match to be included. Example: "%s-[0-9]*.mpg"
      */
     private final String filenameRegexPattern;
+
     /**
      * The URI where the content may be resolved.  The pattern uses the format of {@link java.util.Formatter},
      * where the relative full file path is inserted as first parameter, and the file name is inserted as the second

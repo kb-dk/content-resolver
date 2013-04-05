@@ -47,12 +47,30 @@ public class ContentResolverService implements ContentResolver {
      * @return Dissemination of the content.
      */
     @GET
-    @Path("content/{pid}")
+    @Path("content/?{queryString}")
     @Produces({"text/xml", "application/json"})
-    public Content getContent(@PathParam("pid") String pid) {
-        if (pid.contains(":")) {
-            pid = pid.substring(pid.indexOf(':') + 1);
+    public Content getContent(@PathParam("queryString") String queryString) {
+        String[] queryParts = queryString.split("&");
+        Content gatheredContent = new Content();
+
+        for (String pidDefinition : queryParts) {
+            String pid;
+
+            if (pidDefinition.substring(0, 3).equals("id=")) {
+                pid = pidDefinition.substring(3);
+            } else {
+                return new Content();
+            }
+
+            // Remove prefixed "uuid:" if it is there
+            if (pid.contains(":")) {
+                pid = pid.substring(pid.indexOf(':') + 1);
+            }
+
+            gatheredContent.addResources(contentResolver.getContent(pid)
+                    .getResources());
         }
-        return contentResolver.getContent(pid);
+
+        return gatheredContent;
     }
 }
