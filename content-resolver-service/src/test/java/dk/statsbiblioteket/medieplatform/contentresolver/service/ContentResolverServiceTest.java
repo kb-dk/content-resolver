@@ -39,8 +39,10 @@ import javax.naming.NameAlreadyBoundException;
  * Test webservice behaves as expected.
  */
 public class ContentResolverServiceTest {
-    private static final String EXPECTED_JSON
+    private static final String EXPECTED_JSON_SINGLE_UUID
             = "{\"resource\":[{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"]}]}\n";
+    private static final String EXPECTED_JSON_MULTIPLE_UUIDS
+            = "{\"resource\":[{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"]},{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00004513-07c0-41f7-9a4e-ce7b2ef69954.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.1.jpeg\"]}]}\n";
     private WebResource wr;
     private HttpServer httpServer;
 
@@ -78,23 +80,34 @@ public class ContentResolverServiceTest {
     @Test
     public void testWebservice() throws Exception {
         // Call webservice
-        String result = wr.path("content").path("00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
+        String result = wr.path("content").path("?id=00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
                 .get(String.class);
 
         // Check result
-        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON),
+        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_SINGLE_UUID),
                                 JSONObject.fromObject(result));
     }
 
     @Test
     public void testWebserviceWithUuidPrefix() throws Exception {
         // Call webservice
-        String result = wr.path("content").path("uuid:00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
+        String result = wr.path("content").path("?id=uuid:00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
                 .get(String.class);
 
         // Check result
-        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON),
+        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_SINGLE_UUID),
                                 JSONObject.fromObject(result));
     }
 
+    @Test
+    public void testWebserviceWithMultipleUuids() throws Exception {
+        // Call webservice
+        String result = wr.path("content").path("?id=00001ecd-f3d8-4aac-a486-093e45b079a0"
+                + "&id=00004513-07c0-41f7-9a4e-ce7b2ef69954").accept("application/json")
+                .get(String.class);
+
+        // Check result
+        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_MULTIPLE_UUIDS),
+                                JSONObject.fromObject(result));
+    }
 }
