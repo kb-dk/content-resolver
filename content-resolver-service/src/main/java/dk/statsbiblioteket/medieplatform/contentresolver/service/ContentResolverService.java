@@ -24,16 +24,17 @@ import dk.statsbiblioteket.medieplatform.contentresolver.lib.ConfigurableContent
 import dk.statsbiblioteket.medieplatform.contentresolver.lib.ContentResolver;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Path("/")
-public class ContentResolverService implements ContentResolver {
+public class ContentResolverService {
     private final ContentResolver contentResolver;
 
     public ContentResolverService() {
@@ -43,34 +44,29 @@ public class ContentResolverService implements ContentResolver {
     /**
      * Given a PID, return a list of content disseminations.
      *
-     * @param pid The pid of the content to lookup.
+     * @param ids The ids of the content to lookup.
      * @return Dissemination of the content.
      */
     @GET
-    @Path("content/?{queryString}")
-    @Produces({"text/xml", "application/json"})
-    public Content getContent(@PathParam("queryString") String queryString) {
-        String[] queryParts = queryString.split("&");
-        Content gatheredContent = new Content();
+    @Path("content/")
+    //@Produces({"application/json"})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String,Content> getContent(@QueryParam("id") List<String> ids) {
+        Map<String,Content> idContentPairs = new HashMap<String,Content>();
 
-        for (String pidDefinition : queryParts) {
-            String pid;
-
-            if (pidDefinition.substring(0, 3).equals("id=")) {
-                pid = pidDefinition.substring(3);
-            } else {
-                return new Content();
-            }
-
+        for (String pid : ids) {
+            Content content = new Content();
             // Remove prefixed "uuid:" if it is there
             if (pid.contains(":")) {
                 pid = pid.substring(pid.indexOf(':') + 1);
             }
 
-            gatheredContent.addResources(contentResolver.getContent(pid)
+            content.addResources(contentResolver.getContent(pid)
                     .getResources());
+
+            idContentPairs.put(pid, content);
         }
 
-        return gatheredContent;
+        return idContentPairs;
     }
 }

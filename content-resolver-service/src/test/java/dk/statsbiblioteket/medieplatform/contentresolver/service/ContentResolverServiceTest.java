@@ -34,15 +34,17 @@ import org.junit.Test;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameAlreadyBoundException;
+import javax.ws.rs.core.MediaType;
+import java.util.Collections;
 
 /**
  * Test webservice behaves as expected.
  */
 public class ContentResolverServiceTest {
     private static final String EXPECTED_JSON_SINGLE_UUID
-            = "{\"resource\":[{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"]}]}\n";
+            = "{\"00001ecd-f3d8-4aac-a486-093e45b079a0\":{\"resource\":[{\"url\":[\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"],\"type\":\"preview\"},{\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"],\"type\":\"thumbnails\"}]}}";
     private static final String EXPECTED_JSON_MULTIPLE_UUIDS
-            = "{\"resource\":[{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"]},{\"type\":\"preview\",\"url\":\"rtsp://example.com/bart/preview/0/0/0/0/00004513-07c0-41f7-9a4e-ce7b2ef69954.preview.flv\"},{\"type\":\"thumbnails\",\"url\":[\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.1.jpeg\"]}]}\n";
+            = "{\"00001ecd-f3d8-4aac-a486-093e45b079a0\":{\"resource\":[{\"url\":[\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"],\"type\":\"preview\"},{\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"],\"type\":\"thumbnails\"}]},\"00004513-07c0-41f7-9a4e-ce7b2ef69954\":{\"resource\":[{\"url\":[\"rtsp://example.com/bart/preview/0/0/0/0/00004513-07c0-41f7-9a4e-ce7b2ef69954.preview.flv\"],\"type\":\"preview\"},{\"url\":[\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.1.jpeg\"],\"type\":\"thumbnails\"}]}}";
     private WebResource wr;
     private HttpServer httpServer;
 
@@ -65,8 +67,11 @@ public class ContentResolverServiceTest {
         }
 
         // Setup webservice
+        ClassNamesResourceConfig rc = new ClassNamesResourceConfig(ContentResolverService.class);
+        rc.setPropertiesAndFeatures(Collections.singletonMap(
+                "com.sun.jersey.api.json.POJOMappingFeature", (Object) Boolean.TRUE));
         httpServer = HttpServerFactory
-                .create("http://localhost:12345/", new ClassNamesResourceConfig(ContentResolverService.class));
+                .create("http://localhost:12345/", rc);
         httpServer.start();
         Client c = Client.create();
         wr = c.resource("http://localhost:12345/");
@@ -80,7 +85,7 @@ public class ContentResolverServiceTest {
     @Test
     public void testWebservice() throws Exception {
         // Call webservice
-        String result = wr.path("content").path("?id=00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
+        String result = wr.path("content/").queryParam("id", "00001ecd-f3d8-4aac-a486-093e45b079a0").accept(MediaType.APPLICATION_JSON)
                 .get(String.class);
 
         // Check result
@@ -91,7 +96,7 @@ public class ContentResolverServiceTest {
     @Test
     public void testWebserviceWithUuidPrefix() throws Exception {
         // Call webservice
-        String result = wr.path("content").path("?id=uuid:00001ecd-f3d8-4aac-a486-093e45b079a0").accept("application/json")
+        String result = wr.path("content").queryParam("id", "uuid:00001ecd-f3d8-4aac-a486-093e45b079a0").accept(MediaType.APPLICATION_JSON)
                 .get(String.class);
 
         // Check result
@@ -102,8 +107,8 @@ public class ContentResolverServiceTest {
     @Test
     public void testWebserviceWithMultipleUuids() throws Exception {
         // Call webservice
-        String result = wr.path("content").path("?id=00001ecd-f3d8-4aac-a486-093e45b079a0"
-                + "&id=00004513-07c0-41f7-9a4e-ce7b2ef69954").accept("application/json")
+        String result = wr.path("content").queryParam("id", "00001ecd-f3d8-4aac-a486-093e45b079a0")
+                .queryParam("id", "00004513-07c0-41f7-9a4e-ce7b2ef69954").accept(MediaType.APPLICATION_JSON)
                 .get(String.class);
 
         // Check result
