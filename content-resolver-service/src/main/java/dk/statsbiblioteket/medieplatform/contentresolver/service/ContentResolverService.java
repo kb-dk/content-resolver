@@ -54,17 +54,18 @@ public class ContentResolverService {
     public Map<String,Content> getContent(@QueryParam("id") List<String> ids) {
         Map<String,Content> idContentPairs = new HashMap<String,Content>();
 
-        for (String pid : ids) {
+        for (String id : ids) {
+            String originalId = id;
             Content content = new Content();
             // Remove prefixed "uuid:" if it is there
-            if (pid.contains(":")) {
-                pid = pid.substring(pid.indexOf(':') + 1);
+            if (id.contains(":")) {
+                id = id.substring(id.indexOf(':') + 1);
             }
 
-            content.addResources(contentResolver.getContent(pid)
+            content.setResources(contentResolver.getContent(id)
                     .getResources());
 
-            idContentPairs.put(pid, content);
+            idContentPairs.put(originalId, content);
         }
 
         return idContentPairs;

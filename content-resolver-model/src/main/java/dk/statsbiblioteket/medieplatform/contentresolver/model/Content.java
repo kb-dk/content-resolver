@@ -61,15 +61,4 @@ public class Content {
     public void addResource(Resource resource) {
         this.resources.add(resource);
     }
-
-    /**
-     * Add to available content.
-     *
-     * @param resources Resources to add.
-     */
-    public void addResources(List<Resource> resources) {
-        for (Resource resource : resources) {
-            this.resources.add(resource);
-        }
-    }
 }
