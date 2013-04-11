@@ -59,7 +59,7 @@ public class ContentResolverService {
             Content content = new Content();
             // Remove prefixed "uuid:" if it is there
             if (id.contains(":")) {
-                id = id.substring(id.indexOf(':') + 1);
+                id = id.substring(id.lastIndexOf(':') + 1);
             }
 
             content.setResources(contentResolver.getContent(id)
