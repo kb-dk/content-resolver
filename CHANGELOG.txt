@@ -1,0 +1,6 @@
+Version 1.0 - Simplified content resolving, unit tests, ignoring prefix of ids
+
+Version 0.3 - Added ability to handle multiple ids
+
+Version 0.2 - First version
+
