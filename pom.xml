@@ -4,7 +4,7 @@
 
     <groupId>dk.statsbiblioteket.medieplatform</groupId>
     <artifactId>content-resolver</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
         <module>content-resolver-model</module>
         <module>content-resolver-lib</module>
