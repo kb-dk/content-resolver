@@ -14,9 +14,9 @@
     <name>Content Resolver</name>
 
     <parent>
-        <groupId>dk.statsbiblioteket.sbprojects</groupId>
-        <artifactId>sbprojects-parent</artifactId>
-        <version>3</version>
+        <groupId>org.sbforge</groupId>
+        <artifactId>sbforge-parent</artifactId>
+        <version>12</version>
     </parent>
 
     <description>Infrastructure for resolving content dissemination from PIDs</description>
@@ -36,8 +36,8 @@
 
     <repositories>
         <repository>
-            <id>sbprojects-nexus</id>
-            <url>https://sbprojects.statsbiblioteket.dk/nexus/content/groups/public</url>
+            <id>sbforge-nexus</id>
+            <url>https://sbforge.org/nexus/content/groups/public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
