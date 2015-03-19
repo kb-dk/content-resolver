@@ -44,6 +44,7 @@ public class CombiningContentResolver implements ContentResolver {
     public Content getContent(String pid) {
         Content content = new Content();
         for (ContentResolver contentResolver : contentResolvers) {
+            //TODO Do this in parallel
             List<Resource> resources = contentResolver.getContent(pid).getResources();
             for (Resource resource : resources) {
                 content.addResource(resource);

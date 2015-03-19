@@ -55,6 +55,7 @@ public class ContentResolverService {
         Map<String,Content> idContentPairs = new HashMap<String,Content>();
 
         for (String id : ids) {
+            //TODO Do this in parallel
             String originalId = id;
             Content content = new Content();
             // Remove prefixed "uuid:" if it is there
