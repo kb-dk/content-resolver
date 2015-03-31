@@ -56,7 +56,6 @@ public class ContentResolverService {
      */
     @GET
     @Path("content/")
-    //@Produces({"application/json"})
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Content> getContent(@QueryParam("id") List<String> ids) {
         final Map<String,Content> idContentPairs = Collections.synchronizedMap(new HashMap<String,Content>());
