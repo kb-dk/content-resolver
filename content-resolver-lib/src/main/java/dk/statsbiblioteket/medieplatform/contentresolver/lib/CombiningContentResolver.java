@@ -23,13 +23,19 @@ package dk.statsbiblioteket.medieplatform.contentresolver.lib;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Given a list of content resolvers, combine the results into one.
  */
 public class CombiningContentResolver implements ContentResolver {
     private final List<ContentResolver> contentResolvers;
+    private static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
     public CombiningContentResolver(List<ContentResolver> contentResolvers) {
         this.contentResolvers = contentResolvers;
@@ -41,14 +47,26 @@ public class CombiningContentResolver implements ContentResolver {
      * @param pid The pid of the content to lookup.
      * @return Dissemination of the content.
      */
-    public Content getContent(String pid) {
-        Content content = new Content();
-        for (ContentResolver contentResolver : contentResolvers) {
-            //TODO Do this in parallel
-            List<Resource> resources = contentResolver.getContent(pid).getResources();
-            for (Resource resource : resources) {
-                content.addResource(resource);
-            }
+    public Content getContent(final String pid) {
+        final Content content = new Content();
+
+        List<Callable<Void>> callables = new ArrayList<Callable<Void>>(contentResolvers.size());
+        for (final ContentResolver contentResolver : contentResolvers) {
+            callables.add(new Callable<Void>() {
+                @Override
+                public Void call() {
+                    List<Resource> resources = contentResolver.getContent(pid).getResources();
+                    for (Resource resource : resources) {
+                        content.addResource(resource);
+                    }
+                    return null;
+                }
+            });
+        }
+        try {
+            THREAD_POOL.invokeAll(callables, 10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            //Ignore and return what we have
         }
         return content;
     }

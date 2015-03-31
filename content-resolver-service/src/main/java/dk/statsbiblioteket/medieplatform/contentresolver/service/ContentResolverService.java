@@ -29,13 +29,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Path("/")
 public class ContentResolverService {
     private final ContentResolver contentResolver;
+    private static final ExecutorService THREAD_POOL = Executors.newCachedThreadPool();
 
     public ContentResolverService() {
         this.contentResolver = new ConfigurableContentResolver();
@@ -52,23 +59,32 @@ public class ContentResolverService {
     //@Produces({"application/json"})
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Content> getContent(@QueryParam("id") List<String> ids) {
-        Map<String,Content> idContentPairs = new HashMap<String,Content>();
+        final Map<String,Content> idContentPairs = Collections.synchronizedMap(new HashMap<String,Content>());
 
-        for (String id : ids) {
-            //TODO Do this in parallel
-            String originalId = id;
-            Content content = new Content();
-            // Remove prefixed "uuid:" if it is there
-            if (id.contains(":")) {
-                id = id.substring(id.lastIndexOf(':') + 1);
-            }
+        List<Callable<Void>> callables = new ArrayList<Callable<Void>>(ids.size());
+        for (final String id : ids) {
+            callables.add(new Callable<Void>() {
+                @Override
+                public Void call() {
+                    String cleanid = id;
+                    Content content = new Content();
+                    // Remove prefixed "uuid:" if it is there
+                    if (cleanid.contains(":")) {
+                        cleanid = cleanid.substring(cleanid.lastIndexOf(':') + 1);
+                    }
 
-            content.setResources(contentResolver.getContent(id)
-                    .getResources());
+                    content.setResources(contentResolver.getContent(cleanid).getResources());
 
-            idContentPairs.put(originalId, content);
+                    idContentPairs.put(id, content);
+                    return null;
+                }
+            });
         }
-
+        try {
+            THREAD_POOL.invokeAll(callables, 10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            //Ignore and return what we have
+        }
         return idContentPairs;
     }
 }

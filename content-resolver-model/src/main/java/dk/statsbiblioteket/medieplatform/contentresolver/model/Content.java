@@ -23,6 +23,7 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
 @XmlRootElement(namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
 public class Content {
     /** Available contents. */
-    private List<Resource> resources = new ArrayList<Resource>();
+    private List<Resource> resources = Collections.synchronizedList(new ArrayList<Resource>());
 
     /**
      * Get available content.
@@ -40,7 +41,7 @@ public class Content {
      */
     @XmlElement(name = "resource", namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
     public List<Resource> getResources() {
-        return resources;
+        return new ArrayList<Resource>(resources);
     }
 
     /**
@@ -49,7 +50,7 @@ public class Content {
      * @param resources Overwrite all available contents with this.
      */
     public void setResources(List<Resource> resources) {
-        this.resources = new ArrayList<Resource>(resources);
+        this.resources = Collections.synchronizedList(new ArrayList<Resource>(resources));
     }
 
     /**
