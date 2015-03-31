@@ -4,7 +4,7 @@
 
     <groupId>dk.statsbiblioteket.medieplatform</groupId>
     <artifactId>content-resolver</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <modules>
         <module>content-resolver-model</module>
         <module>content-resolver-lib</module>
@@ -51,7 +51,8 @@
         <url>https://github.com/statsbiblioteket/content-resolver</url>
         <connection>scm:git:git@github.com/statsbiblioteket/content-resolver.git</connection>
         <developerConnection>scm:git:git@github.com:statsbiblioteket/content-resolver.git</developerConnection>
-    </scm>
+      <tag>content-resolver-1.1</tag>
+  </scm>
 
     <developers>
         <developer>
