@@ -23,8 +23,11 @@ package dk.statsbiblioteket.medieplatform.contentresolver.lib;
 import org.junit.Test;
 
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
+import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -36,28 +39,40 @@ public class ConfigurableContentResolverTest {
         // Lookup a resource in the previews directory
         Content content = contentResolver.getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
 
-        // Check result: Exactly one uri of type preview.
+        // Check result: Expecting two types, one 'preview' one 'thumbnails'.
         assertEquals(2, content.getResources().size());
-        assertEquals("preview", content.getResources().get(0).getType());
-        assertEquals(1, content.getResources().get(0).getUris().size());
-        assertEquals(
-                new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
-                content.getResources().get(0).getUris().get(0));
-
-        // Check result: 5 uris in one resource of type thumbnail.
-        assertEquals("thumbnails", content.getResources().get(1).getType());
-        assertEquals(5, content.getResources().get(1).getUris().size());
-        assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg"),
-                     content.getResources().get(1).getUris().get(0));
-        assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg"),
-                     content.getResources().get(1).getUris().get(1));
-        assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg"),
-                     content.getResources().get(1).getUris().get(2));
-        assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg"),
-                     content.getResources().get(1).getUris().get(3));
-        assertEquals(
-                new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg"),
-                content.getResources().get(1).getUris().get(4));
-
+        Set<String> resourceTypes = new HashSet<>();
+        for(Resource r : content.getResources()) {
+            resourceTypes.add(r.getType());
+        }
+        assertTrue(resourceTypes.contains("preview"));
+        assertTrue(resourceTypes.contains("thumbnails"));
+        
+        // Check result: verify that the 'preview' and 'thumbnails' content types contain the expected urls.
+        
+        for(Resource r : content.getResources()) {
+            if(r.getType().equals("preview")) {
+                assertEquals(1, r.getUris().size());
+                assertEquals(
+                        new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
+                        r.getUris().get(0));
+            } else if(r.getType().equals("thumbnails")) {
+                assertEquals(5, r.getUris().size());
+                assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg"),
+                             r.getUris().get(0));
+                assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg"),
+                             r.getUris().get(1));
+                assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg"),
+                             r.getUris().get(2));
+                assertEquals(new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg"),
+                             r.getUris().get(3));
+                assertEquals(
+                        new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg"),
+                        r.getUris().get(4));               
+            } else {
+                assertFalse("Got an unexpected type: '" + r.getType() + "'", 
+                        r.getType().equals("preview") || r.getType().equals("thumbnails"));
+            }
+        }
     }
 }

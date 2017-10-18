@@ -24,11 +24,11 @@ import static org.junit.Assert.*;
 
 import com.sun.jersey.api.json.JSONJAXBContext;
 import com.sun.jersey.api.json.JSONMarshaller;
-import net.sf.json.JSONObject;
-import net.sf.json.test.JSONAssert;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.json.JSONObject;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -109,7 +109,7 @@ public class TestContent {
         String result = writer.toString();
 
         // Test for equality
-        JSONAssert.assertEquals(JSONObject.fromObject(EXPECTED_JSON), JSONObject.fromObject(result));
+        JSONAssert.assertEquals(new JSONObject(EXPECTED_JSON), new JSONObject(result), false);
     }
 
     /**

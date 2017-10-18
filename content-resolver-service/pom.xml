@@ -40,14 +40,18 @@
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
-            <artifactId>catalina</artifactId>
+            <artifactId>tomcat-catalina</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <classifier>jdk15</classifier>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <scope>test</scope>       
         </dependency>
     </dependencies>
 </project>

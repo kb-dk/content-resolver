@@ -25,11 +25,12 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.jersey.api.core.ClassNamesResourceConfig;
 import com.sun.net.httpserver.HttpServer;
-import net.sf.json.JSONObject;
-import net.sf.json.test.JSONAssert;
+
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -49,6 +50,9 @@ public class ContentResolverServiceTest {
             = "{\"00001ecd-f3d8-4aac-a486-093e45b079a0\":{\"resource\":[{\"url\":[\"rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv\"],\"type\":\"preview\"},{\"url\":[\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.3.jpeg\",\"http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg\"],\"type\":\"thumbnails\"}]},\"00004513-07c0-41f7-9a4e-ce7b2ef69954\":{\"resource\":[{\"url\":[\"rtsp://example.com/bart/preview/0/0/0/0/00004513-07c0-41f7-9a4e-ce7b2ef69954.preview.flv\"],\"type\":\"preview\"},{\"url\":[\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.1.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.2.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.0.jpeg\",\"http://example.com/bart/thumbnail/00004513-07c0-41f7-9a4e-ce7b2ef69954.snapshot.preview.1.jpeg\"],\"type\":\"thumbnails\"}]}}";
     private WebResource wr;
     private HttpServer httpServer;
+
+    // JSONAssert strict checking (i.e. don't consider array order important) is disabled by passing false at 3rd arg.
+    private final boolean IGNORE_ORDER = false; 
 
     @Before
     public void setUp() throws Exception {
@@ -91,8 +95,9 @@ public class ContentResolverServiceTest {
                 .get(String.class);
 
         // Check result
-        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_SINGLE_UUID),
-                                JSONObject.fromObject(result));
+        JSONObject expectedJson = new JSONObject(EXPECTED_JSON_SINGLE_UUID);
+        JSONObject jsonFromService = new JSONObject(result);
+        JSONAssert.assertEquals(expectedJson, jsonFromService, IGNORE_ORDER);
     }
 
     @Test
@@ -102,8 +107,9 @@ public class ContentResolverServiceTest {
                 .get(String.class);
 
         // Check result
-        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_SINGLE_UUID_WITH_PREFIX),
-                                JSONObject.fromObject(result));
+        JSONObject expectedJson = new JSONObject(EXPECTED_JSON_SINGLE_UUID_WITH_PREFIX);
+        JSONObject jsonFromService = new JSONObject(result);
+        JSONAssert.assertEquals(expectedJson, jsonFromService, IGNORE_ORDER);
     }
 
     @Test
@@ -114,7 +120,8 @@ public class ContentResolverServiceTest {
                 .get(String.class);
 
         // Check result
-        JSONAssert.assertEquals("Should get expected json", JSONObject.fromObject(EXPECTED_JSON_MULTIPLE_UUIDS),
-                                JSONObject.fromObject(result));
+        JSONObject expectedJson = new JSONObject(EXPECTED_JSON_MULTIPLE_UUIDS);
+        JSONObject jsonFromService = new JSONObject(result);
+        JSONAssert.assertEquals(expectedJson, jsonFromService, IGNORE_ORDER);
     }
 }
