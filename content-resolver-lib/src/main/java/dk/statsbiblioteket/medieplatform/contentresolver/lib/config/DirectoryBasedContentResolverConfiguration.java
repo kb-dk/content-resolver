@@ -37,6 +37,12 @@ public class DirectoryBasedContentResolverConfiguration {
      */
     private int characterDirs;
     /**
+     * Width of each characterDirs split. Example: if it is 2, and characterDirs = 2, the file "hello.txt" 
+     * will be in the path "he/ll/hello.txt"
+     * The default value of characterDirsWidth is 1. 
+     */
+    private int characterDirsWidth = 1;
+    /**
      * Pattern used for turning the pid into a file name regex. The pattern uses the format of
      * {@link java.util.Formatter}, where the pid string is inserted as first parameter. The result should be a
      * regex {@link Pattern} that files should match to be included. Example: "%s-[0-9]*.mpg"
@@ -74,6 +80,14 @@ public class DirectoryBasedContentResolverConfiguration {
 
     public void setCharacterDirs(int characterDirs) {
         this.characterDirs = characterDirs;
+    }
+    
+    public int getCharacterDirsWidth() {
+        return characterDirsWidth;
+    }
+
+    public void setCharacterDirsWidth(int characterDirsWidth) {
+        this.characterDirsWidth = characterDirsWidth;
     }
 
     public String getFilenameRegexPattern() {

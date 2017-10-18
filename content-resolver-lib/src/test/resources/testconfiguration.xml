@@ -34,4 +34,12 @@
         <filenameRegexPattern>%s\.snapshot\..*\.jpeg</filenameRegexPattern>
         <uriPattern>http://example.com/bart/thumbnail/%2$s</uriPattern>
     </directoryBasedContentResolverConfigurations>
+    <directoryBasedContentResolverConfigurations>
+        <type>stream</type>
+        <baseDirectory>src/test/resources/streams</baseDirectory>
+        <characterDirs>2</characterDirs>
+        <characterDirsWidth>2</characterDirsWidth>
+        <filenameRegexPattern>%s</filenameRegexPattern>
+        <uriPattern>http://example.com/bart/streams/%s</uriPattern>
+    </directoryBasedContentResolverConfigurations>
 </configurableContentResolverConfiguration>

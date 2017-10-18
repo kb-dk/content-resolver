@@ -62,6 +62,8 @@ public class ConfigurableContentResolver implements ContentResolver {
                                                            directoryBasedContentResolverConfiguration
                                                                    .getCharacterDirs(),
                                                            directoryBasedContentResolverConfiguration
+                                                                   .getCharacterDirsWidth(),
+                                                           directoryBasedContentResolverConfiguration
                                                                    .getFilenameRegexPattern(),
                                                            directoryBasedContentResolverConfiguration.getUriPattern()));
         }

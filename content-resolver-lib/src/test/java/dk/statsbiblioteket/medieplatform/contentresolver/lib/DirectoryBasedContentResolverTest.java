@@ -43,9 +43,11 @@ public class DirectoryBasedContentResolverTest {
                 getClass().getClassLoader().getResource("previews/README_previews.txt").getPath()).getParentFile();
         File thumbnailsDirectory = new File(
                 getClass().getClassLoader().getResource("thumbnails/README_thumbnails.txt").getPath()).getParentFile();
+        File streamsDirectory = new File(
+                getClass().getClassLoader().getResource("streams/README_streams.txt").getPath()).getParentFile();
 
         // Lookup a resource in the previews directory
-        Content content = new DirectoryBasedContentResolver("preview", previewsDirectory, 4,
+        Content content = new DirectoryBasedContentResolver("preview", previewsDirectory, 4, 1,
                                                             "%s\\.preview\\.(flv)|(mp3)",
                                                             "rtsp://example.com/bart/preview/%s")
                 .getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
@@ -59,7 +61,7 @@ public class DirectoryBasedContentResolverTest {
                 content.getResources().get(0).getUris().get(0));
 
         // Lookup a resource in the thumbnails directory.
-        content = new DirectoryBasedContentResolver("thumbnails", thumbnailsDirectory, 4, "%s\\.snapshot\\..*\\.jpeg",
+        content = new DirectoryBasedContentResolver("thumbnails", thumbnailsDirectory, 4, 1, "%s\\.snapshot\\..*\\.jpeg",
                                                     "http://example.com/bart/thumbnail/%2$s")
                 .getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
 
@@ -78,5 +80,15 @@ public class DirectoryBasedContentResolverTest {
         assertEquals(
                 new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg"),
                 content.getResources().get(0).getUris().get(4));
+        
+        content = new DirectoryBasedContentResolver("streams", streamsDirectory, 2, 2, "%s",
+                "http://example.com/bart/streams/%s")
+                .getContent("00001234-07c0-41f7-9a4e-ce7b2ef69954");
+
+        assertEquals(1, content.getResources().size());
+        assertEquals("streams", content.getResources().get(0).getType()); 
+        assertEquals(1, content.getResources().get(0).getUris().size());
+        assertEquals(new URI("http://example.com/bart/streams/00/00/00001234-07c0-41f7-9a4e-ce7b2ef69954"),
+                content.getResources().get(0).getUris().get(0));
     }
 }

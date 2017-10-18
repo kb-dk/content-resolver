@@ -51,6 +51,12 @@ public class DirectoryBasedContentResolver implements ContentResolver {
      * will be in the path "h/e/hello.txt".
      */
     private final int characterDirs;
+    
+    /**
+     * Width of each characterDirs split. Example: if it is 2, and characterDirs = 2, the file "hello.txt" 
+     * will be in the path "he/ll/hello.txt"
+     */
+    private final int characterDirsWidth;
 
     /**
      * Pattern used for turning the pid into a file name regex. The pattern uses the format of
@@ -76,6 +82,8 @@ public class DirectoryBasedContentResolver implements ContentResolver {
      * @param baseDirectory Base directory for the content resolved by this resolver.
      * @param characterDirs Number of characters to use for splitting content into directories. Example: if the is 2,
      *                      the file "hello.txt" will be in the path "h/e/hello.txt".
+     * @param characterDirsWidth Width of each characterDirs split. Example: if it is 2, and characterDirs = 2, the file "hello.txt" 
+     *                        will be in the path "he/ll/hello.txt"
      * @param filenameRegexPattern Pattern used for turning the pid into a file name. The pattern uses the format of
      *                        {@link java.util.Formatter}, where the pid string is inserted as first parameter.
      *                        Example: "%s.mpg"
@@ -88,11 +96,12 @@ public class DirectoryBasedContentResolver implements ContentResolver {
      *                   http://example.com/resolve/%2$s may turn into
      *                   http://example.com/resolve/88144228-38ce-4f84-9ea4-115caab84297.mpg
      */
-    public DirectoryBasedContentResolver(String type, File baseDirectory, int characterDirs, String filenameRegexPattern,
-                                         String uriPattern) {
+    public DirectoryBasedContentResolver(String type, File baseDirectory, int characterDirs, int characterDirsWidth, 
+                                         String filenameRegexPattern, String uriPattern) {
         this.type = type;
         this.baseDirectory = baseDirectory;
         this.characterDirs = characterDirs;
+        this.characterDirsWidth = characterDirsWidth;
         this.filenameRegexPattern = filenameRegexPattern;
         this.uriPattern = uriPattern;
     }
@@ -110,8 +119,11 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         }
         File directory = baseDirectory;
         String uriPath = "";
-        for (int i = 0; i < Math.min(characterDirs, pid.length()); i++) {
-            String pathChar = String.valueOf(pid.charAt(i));
+        int iterations = Math.min(characterDirs, (pid.length() / characterDirsWidth));
+        for (int i = 0; i < iterations; i++) {
+            int startIdx = i * characterDirsWidth;
+            int stopIdx = startIdx + (characterDirsWidth); 
+            String pathChar = pid.substring(startIdx, stopIdx);
             directory = new File(directory, pathChar);
             uriPath += pathChar + "/";
         }
