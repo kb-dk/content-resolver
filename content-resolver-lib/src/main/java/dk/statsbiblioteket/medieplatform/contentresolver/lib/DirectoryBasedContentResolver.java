@@ -119,10 +119,11 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         }
         File directory = baseDirectory;
         String uriPath = "";
+        int startIdx = 0, stopIdx = 0;
         int iterations = Math.min(characterDirs, (pid.length() / characterDirsWidth));
         for (int i = 0; i < iterations; i++) {
-            int startIdx = i * characterDirsWidth;
-            int stopIdx = startIdx + (characterDirsWidth); 
+            startIdx = (i * characterDirsWidth);
+            stopIdx = startIdx + (characterDirsWidth);
             String pathChar = pid.substring(startIdx, stopIdx);
             directory = new File(directory, pathChar);
             uriPath += pathChar + "/";
