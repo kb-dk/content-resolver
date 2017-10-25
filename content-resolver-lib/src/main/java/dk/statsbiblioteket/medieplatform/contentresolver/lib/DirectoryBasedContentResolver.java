@@ -82,6 +82,30 @@ public class DirectoryBasedContentResolver implements ContentResolver {
      * @param baseDirectory Base directory for the content resolved by this resolver.
      * @param characterDirs Number of characters to use for splitting content into directories. Example: if the is 2,
      *                      the file "hello.txt" will be in the path "h/e/hello.txt".
+     * @param filenameRegexPattern Pattern used for turning the pid into a file name. The pattern uses the format of
+     *                        {@link java.util.Formatter}, where the pid string is inserted as first parameter.
+     *                        Example: "%s.mpg"
+     * @param uriPattern The URI where the content may be resolved. The pattern uses the format of
+     *                   {@link java.util.Formatter}, where the relative full file path is inserted as first parameter,
+     *                   and the file name is inserted as the second parameter. E.g.
+     *                   http://example.com/resolve/%s may turn into
+     *                   http://example.com/resolve/8/8/1/4/88144228-38ce-4f84-9ea4-115caab84297.mpg
+     *                   whereas
+     *                   http://example.com/resolve/%2$s may turn into
+     *                   http://example.com/resolve/88144228-38ce-4f84-9ea4-115caab84297.mpg
+     */
+    public DirectoryBasedContentResolver(String type, File baseDirectory, int characterDirs, String filenameRegexPattern, 
+                                         String uriPattern) {
+        this(type, baseDirectory, characterDirs, 1, filenameRegexPattern, uriPattern);
+    }
+    
+    /**
+     * Initialise directorybased content resolver.
+     *
+     * @param type The type of content resolved. See {@link Resource#getType()}.
+     * @param baseDirectory Base directory for the content resolved by this resolver.
+     * @param characterDirs Number of characters to use for splitting content into directories. Example: if the is 2,
+     *                      the file "hello.txt" will be in the path "h/e/hello.txt".
      * @param characterDirsWidth Width of each characterDirs split. Example: if it is 2, and characterDirs = 2, the file "hello.txt" 
      *                        will be in the path "he/ll/hello.txt"
      * @param filenameRegexPattern Pattern used for turning the pid into a file name. The pattern uses the format of

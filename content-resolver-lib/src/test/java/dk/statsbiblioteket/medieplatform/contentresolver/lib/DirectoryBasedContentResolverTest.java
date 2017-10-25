@@ -26,6 +26,7 @@ import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.junit.Assert.*;
 
@@ -89,6 +90,41 @@ public class DirectoryBasedContentResolverTest {
         assertEquals("streams", content.getResources().get(0).getType()); 
         assertEquals(1, content.getResources().get(0).getUris().size());
         assertEquals(new URI("http://example.com/bart/streams/00/00/00001234-07c0-41f7-9a4e-ce7b2ef69954"),
+                content.getResources().get(0).getUris().get(0));
+    }
+    
+    @Test
+    public void testOldConstructor() throws URISyntaxException {
+        File previewsDirectory = new File(
+                getClass().getClassLoader().getResource("previews/README_previews.txt").getPath()).getParentFile();
+     // Lookup a resource in the previews directory
+        Content content = new DirectoryBasedContentResolver("preview", previewsDirectory, 4,
+                                                            "%s\\.preview\\.(flv)|(mp3)",
+                                                            "rtsp://example.com/bart/preview/%s")
+                .getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
+
+        // Check result: Exactly one uri of type preview.
+        assertEquals(1, content.getResources().size());
+        assertEquals("preview", content.getResources().get(0).getType());
+        assertEquals(1, content.getResources().get(0).getUris().size());
+        assertEquals(
+                new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
+                content.getResources().get(0).getUris().get(0));
+    }
+    
+    @Test
+    public void testShortFilename() throws URISyntaxException {
+        File streamsDirectory = new File(
+                getClass().getClassLoader().getResource("streams/README_streams.txt").getPath()).getParentFile();
+
+        Content content = new DirectoryBasedContentResolver("streams", streamsDirectory, 3, 2, "%s",
+                "http://example.com/bart/streams/%s")
+                .getContent("hello");
+
+        assertEquals(1, content.getResources().size());
+        assertEquals("streams", content.getResources().get(0).getType()); 
+        assertEquals(1, content.getResources().get(0).getUris().size());
+        assertEquals(new URI("http://example.com/bart/streams/he/ll/o/hello"),
                 content.getResources().get(0).getUris().get(0));
     }
 }
