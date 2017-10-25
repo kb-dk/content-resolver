@@ -120,10 +120,10 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         File directory = baseDirectory;
         String uriPath = "";
         int startIdx = 0, stopIdx = 0;
-        int iterations = Math.min(characterDirs, (pid.length() / characterDirsWidth));
+        int iterations = getIterations(pid);
         for (int i = 0; i < iterations; i++) {
             startIdx = (i * characterDirsWidth);
-            stopIdx = startIdx + (characterDirsWidth);
+            stopIdx = Math.min((startIdx + characterDirsWidth), pid.length());
             String pathChar = pid.substring(startIdx, stopIdx);
             directory = new File(directory, pathChar);
             uriPath += pathChar + "/";
@@ -152,4 +152,18 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         }
         return result;
     }
+    
+    /**
+     * Get the number of iterations (or levels of directories) needed. 
+     * The number of iterations is the lesser of {@link #characterDirs} and 
+     * pid.length/{@link #characterDirsWidth} rounded up. 
+     * @param pid The PID that is being resolved. 
+     * @return The number of iterations needed.  
+     */
+    private int getIterations(String pid) {
+        int pidLengthLimitation = (int) Math.ceil(((double) pid.length()) / characterDirsWidth);
+        int iterations = Math.min(characterDirs, pidLengthLimitation);
+        return iterations;
+    }
+    
 }
