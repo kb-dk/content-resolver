@@ -1,3 +1,5 @@
+Version 1.2 - Add support for Preservica style multi-character subdirs
+
 Version 1.1 - Do lookups on parallel
 
 Version 1.0 - Simplified content resolving, unit tests, ignoring prefix of ids
