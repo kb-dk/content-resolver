@@ -24,7 +24,6 @@ import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
