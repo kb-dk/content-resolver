@@ -24,9 +24,12 @@ import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -154,20 +157,31 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         }
         final String filenameRegex = String.format(filenameRegexPattern, pid);
 
-        File[] files = directory.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.matches(filenameRegex);
-            }
-        });
-        if (files != null && files.length > 0) {
-            List<URI> uris = new ArrayList<URI>();
-            for (File file : files) {
+        DirectoryStream<Path> candidatePaths;
+        try {
+            /* Files.listFiles returns File objects, which require system stats-calls (to get their size).
+               Files.newDirectoryStream returns Paths, which does not require these calls.
+               Unless the size is needed for most of the accessed files, the newDirectoryStream is much preferred,
+               especially for network attached file systems.
+               See also https://www.slideshare.net/GregBanks1/java-hates-linux-deal-with-it page 30-44 */
+            candidatePaths = Files.newDirectoryStream(directory.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException("Exception while listing content of " + directory.toPath(), e);
+        }
+
+        List<URI> uris = new ArrayList<>();
+        for (Path candidatePath: candidatePaths) {
+            final String filename = candidatePath.getFileName().toString();
+            if (filename.matches(filenameRegex)) {
                 try {
-                    uris.add(new URI(String.format(uriPattern, uriPath + file.getName(), file.getName())));
+                    uris.add(new URI(String.format(uriPattern, uriPath + filename, filename)));
                 } catch (URISyntaxException e) {
                     // URI is not added
                 }
             }
+        }
+
+        if (!uris.isEmpty()) {
             Collections.sort(uris);
             Resource resource = new Resource();
             resource.setType(type);
