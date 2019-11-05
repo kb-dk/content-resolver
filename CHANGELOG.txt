@@ -1,3 +1,5 @@
+Version 1.3 - Switch from Files.listFiles to Files.newDirectoryStream for better performance over network mounted drives
+
 Version 1.2 - Add support for Preservica style multi-character subdirs
 
 Version 1.1 - Do lookups on parallel
