@@ -159,8 +159,8 @@ public class DirectoryBasedContentResolver implements ContentResolver {
 
         DirectoryStream<Path> candidatePaths;
         try {
-            /* Files.listFiles returns File objects, which require system getdents()-calls (to get their size).
-               Files.newDirectoryStream returns Paths, which does not require this call.
+            /* Files.listFiles returns File objects, which require system stats-calls (to get their size).
+               Files.newDirectoryStream returns Paths, which does not require these calls.
                Unless the size is needed for most of the accessed files, the newDirectoryStream is much preferred,
                especially for network attached file systems.
                See also https://www.slideshare.net/GregBanks1/java-hates-linux-deal-with-it page 30-44 */
