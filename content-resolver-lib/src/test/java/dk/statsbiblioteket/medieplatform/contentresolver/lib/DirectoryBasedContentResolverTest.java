@@ -27,11 +27,40 @@ import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 
 import static org.junit.Assert.*;
 
 /** Test directory based lookup. */
 public class DirectoryBasedContentResolverTest {
+    /**
+     * The switch to {@link java.nio.file.Files#newDirectoryStream(Path)} caused a resource leak.
+     * This unit test hammers the resolver to trigger such leaks.
+     */
+    @Test
+    public void testResourceLeak() throws URISyntaxException {
+        final int REPEATS = 20000;
+
+        File previewsDirectory = new File(
+                getClass().getClassLoader().getResource("previews/README_previews.txt").getPath()).getParentFile();
+        ContentResolver resolver = new DirectoryBasedContentResolver(
+                "preview", previewsDirectory, 4, 1,
+                "%s\\.preview\\.(flv)|(mp3)", "rtsp://example.com/bart/preview/%s");
+        for (int i = 0 ; i < REPEATS ; i++) {
+            Content content = resolver.getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
+            assertPreviewContent(content);
+        }
+    }
+
+    private void assertPreviewContent(Content content) throws URISyntaxException {
+        assertEquals(1, content.getResources().size());
+        assertEquals("preview", content.getResources().get(0).getType());
+        assertEquals(1, content.getResources().get(0).getUris().size());
+        assertEquals(
+                new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
+                content.getResources().get(0).getUris().get(0));
+    }
+
     /**
      * Test looking up files in directory structure.
      *
@@ -54,12 +83,7 @@ public class DirectoryBasedContentResolverTest {
                 .getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
 
         // Check result: Exactly one uri of type preview.
-        assertEquals(1, content.getResources().size());
-        assertEquals("preview", content.getResources().get(0).getType());
-        assertEquals(1, content.getResources().get(0).getUris().size());
-        assertEquals(
-                new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
-                content.getResources().get(0).getUris().get(0));
+        assertPreviewContent(content);
 
         // Lookup a resource in the thumbnails directory.
         content = new DirectoryBasedContentResolver("thumbnails", thumbnailsDirectory, 4, 1, "%s\\.snapshot\\..*\\.jpeg",
@@ -104,12 +128,7 @@ public class DirectoryBasedContentResolverTest {
                 .getContent("00001ecd-f3d8-4aac-a486-093e45b079a0");
 
         // Check result: Exactly one uri of type preview.
-        assertEquals(1, content.getResources().size());
-        assertEquals("preview", content.getResources().get(0).getType());
-        assertEquals(1, content.getResources().get(0).getUris().size());
-        assertEquals(
-                new URI("rtsp://example.com/bart/preview/0/0/0/0/00001ecd-f3d8-4aac-a486-093e45b079a0.preview.flv"),
-                content.getResources().get(0).getUris().get(0));
+        assertPreviewContent(content);
     }
     
     @Test
