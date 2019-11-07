@@ -157,28 +157,26 @@ public class DirectoryBasedContentResolver implements ContentResolver {
         }
         final String filenameRegex = String.format(filenameRegexPattern, pid);
 
-        DirectoryStream<Path> candidatePaths;
-        try {
-            /* Files.listFiles returns File objects, which require system stats-calls (to get their size).
-               Files.newDirectoryStream returns Paths, which does not require these calls.
-               Unless the size is needed for most of the accessed files, the newDirectoryStream is much preferred,
-               especially for network attached file systems.
-               See also https://www.slideshare.net/GregBanks1/java-hates-linux-deal-with-it page 30-44 */
-            candidatePaths = Files.newDirectoryStream(directory.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException("Exception while listing content of " + directory.toPath(), e);
-        }
 
         List<URI> uris = new ArrayList<>();
-        for (Path candidatePath: candidatePaths) {
-            final String filename = candidatePath.getFileName().toString();
-            if (filename.matches(filenameRegex)) {
-                try {
-                    uris.add(new URI(String.format(uriPattern, uriPath + filename, filename)));
-                } catch (URISyntaxException e) {
-                    // URI is not added
+        /* Files.listFiles returns File objects, which require system stats-calls (to get their size).
+           Files.newDirectoryStream returns Paths, which does not require these calls.
+           Unless the size is needed for most of the accessed files, the newDirectoryStream is much preferred,
+           especially for network attached file systems.
+           See also https://www.slideshare.net/GregBanks1/java-hates-linux-deal-with-it page 30-44 */
+        try (DirectoryStream<Path> candidatePaths = Files.newDirectoryStream(directory.toPath())) {
+            for (Path candidatePath : candidatePaths) {
+                final String filename = candidatePath.getFileName().toString();
+                if (filename.matches(filenameRegex)) {
+                    try {
+                        uris.add(new URI(String.format(uriPattern, uriPath + filename, filename)));
+                    } catch (URISyntaxException e) {
+                        // URI is not added
+                    }
                 }
             }
+        } catch (IOException e) {
+            throw new RuntimeException("Exception while listing content of " + directory.toPath(), e);
         }
 
         if (!uris.isEmpty()) {
