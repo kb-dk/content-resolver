@@ -31,6 +31,14 @@ import java.util.List;
  */
 @XmlRootElement(namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
 public class Content {
+
+    /**
+     * Whether or not this Content accepts new resources.
+     * When {@link #close()} is called, this will be set to false and attempts to set or add new resources
+     * will be quetly ignored.
+     */
+    private boolean acceptsResources = true;
+
     /** Available contents. */
     private List<Resource> resources = Collections.synchronizedList(new ArrayList<Resource>());
 
@@ -50,7 +58,9 @@ public class Content {
      * @param resources Overwrite all available contents with this.
      */
     public void setResources(List<Resource> resources) {
-        this.resources = Collections.synchronizedList(new ArrayList<Resource>(resources));
+        if (acceptsResources) {
+            this.resources = Collections.synchronizedList(new ArrayList<Resource>(resources));
+        }
     }
 
     /**
@@ -60,6 +70,16 @@ public class Content {
      *
      */
     public void addResource(Resource resource) {
-        this.resources.add(resource);
+        if (acceptsResources) {
+            this.resources.add(resource);
+        }
+    }
+
+    /**
+     * If called, further calls to {@link #setResources(List)} and {@link #addResource(Resource)} will have no effect.
+     * This is used to guard against ConcurrentModificationExceptions when the Content is being delivered by jackson.
+     */
+    public void close() {
+        acceptsResources = false;
     }
 }
