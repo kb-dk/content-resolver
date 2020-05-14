@@ -68,6 +68,11 @@ public class CombiningContentResolver implements ContentResolver {
         } catch (InterruptedException e) {
             //Ignore and return what we have
         }
+
+        // Ensures that content will no longer be modified by straggling callables and thus guards against
+        // ConcurrentModificationExceptions from the delivery layer
+        content.close();
+
         return content;
     }
 }
