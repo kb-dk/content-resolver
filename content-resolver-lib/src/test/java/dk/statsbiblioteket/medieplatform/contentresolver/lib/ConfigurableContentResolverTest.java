@@ -20,8 +20,6 @@ package dk.statsbiblioteket.medieplatform.contentresolver.lib;
  * #L%
  */
 
-import org.junit.Test;
-
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
 
@@ -29,7 +27,8 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** Test configurable content resolver. */
 public class ConfigurableContentResolverTest {
@@ -70,8 +69,8 @@ public class ConfigurableContentResolverTest {
                         new URI("http://example.com/bart/thumbnail/00001ecd-f3d8-4aac-a486-093e45b079a0.snapshot.preview.0.jpeg"),
                         r.getUris().get(4));               
             } else {
-                assertFalse("Got an unexpected type: '" + r.getType() + "'", 
-                        r.getType().equals("preview") || r.getType().equals("thumbnails"));
+                assertFalse(r.getType().equals("preview") || r.getType().equals("thumbnails"),
+                        "Got an unexpected type: '" + r.getType() + "'");
             }
         }
     }

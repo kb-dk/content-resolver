@@ -20,8 +20,6 @@ package dk.statsbiblioteket.medieplatform.contentresolver.lib;
  * #L%
  */
 
-import org.junit.Test;
-
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 
 import java.io.File;
@@ -29,7 +27,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** Test directory based lookup. */
 public class DirectoryBasedContentResolverTest {

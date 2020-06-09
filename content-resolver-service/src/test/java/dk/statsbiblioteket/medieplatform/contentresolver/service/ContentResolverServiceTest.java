@@ -40,9 +40,9 @@ import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -64,7 +64,7 @@ public class ContentResolverServiceTest {
     // JSONAssert strict checking (i.e. don't consider array order important) is disabled by passing false at 3rd arg.
     private final boolean IGNORE_ORDER = false; 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // Setup JNDI context
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.naming.java.javaURLContextFactory");
@@ -109,7 +109,7 @@ public class ContentResolverServiceTest {
          }
     }
 
-    @After
+    @AfterEach
     public void shutDown() throws Exception {
         server.stop();
         server.destroy();

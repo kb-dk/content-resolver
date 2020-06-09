@@ -2,6 +2,7 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
 
 /*
  * #%L
+
  * content-resolver-model
  * %%
  * Copyright (C) 2012 The State and University Library, Denmark
@@ -19,7 +20,6 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
  * limitations under the License.
  * #L%
  */
-import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 import java.net.URI;
@@ -31,7 +31,8 @@ import javax.xml.bind.Marshaller;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,7 +90,7 @@ public class TestContent {
         // Test for equality
         XMLUnit.setIgnoreWhitespace(true);
         Diff xmlDiff = XMLUnit.compareXML(EXPECTED_XML, result);
-        assertTrue(xmlDiff.toString(), xmlDiff.identical());
+        assertTrue(xmlDiff.identical(), xmlDiff.toString());
     }
 
     /**
