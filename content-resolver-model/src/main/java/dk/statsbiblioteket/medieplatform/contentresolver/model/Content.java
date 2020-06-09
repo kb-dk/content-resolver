@@ -22,6 +22,9 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +50,7 @@ public class Content {
      *
      * @return Available content.
      */
+    @JsonGetter("resource")
     @XmlElement(name = "resource", namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
     public List<Resource> getResources() {
         return new ArrayList<Resource>(resources);

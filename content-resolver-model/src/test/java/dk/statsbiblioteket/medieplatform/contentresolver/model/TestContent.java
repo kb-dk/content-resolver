@@ -19,22 +19,22 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
  * limitations under the License.
  * #L%
  */
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import java.io.StringWriter;
+import java.net.URI;
+import java.util.Arrays;
 
-import com.sun.jersey.api.json.JSONJAXBContext;
-import com.sun.jersey.api.json.JSONMarshaller;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import java.io.StringWriter;
-import java.net.URI;
-import java.util.Arrays;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Test Content class.
@@ -65,7 +65,7 @@ public class TestContent {
             + "    {\"type\":\n"
             + "      \"test2\",\n"
             + "     \"url\":\n"
-            + "       \"http://example.com/3\"\n"
+            + "       [\"http://example.com/3\"]\n"
             + "    }\n"
             + "  ]\n"
             + "}\n";
@@ -103,9 +103,8 @@ public class TestContent {
 
         // Serialize to JSON
         StringWriter writer = new StringWriter();
-        JSONMarshaller marshaller = new JSONJAXBContext(Content.class).createJSONMarshaller();
-        marshaller.setProperty(JSONMarshaller.FORMATTED, true);
-        marshaller.marshallToJSON(content, writer);
+        ObjectMapper om = new ObjectMapper();
+        om.writeValue(writer, content);
         String result = writer.toString();
 
         // Test for equality

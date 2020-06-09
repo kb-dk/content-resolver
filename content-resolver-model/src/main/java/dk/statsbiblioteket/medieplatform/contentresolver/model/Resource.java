@@ -21,6 +21,9 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
  */
 
 import javax.xml.bind.annotation.XmlElement;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,7 @@ public class Resource {
      *
      * @return The urls where the resource is available (usually one, but may be more for e.g. thumbnails).
      */
+    @JsonGetter("url")
     @XmlElement(name = "url", namespace = "http://medieplatform.statsbiblioteket.dk/contentresolver/")
     public List<URI> getUris() {
         return new ArrayList<URI>(uris);
