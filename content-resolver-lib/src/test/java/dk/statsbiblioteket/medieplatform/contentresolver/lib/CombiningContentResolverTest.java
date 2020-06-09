@@ -20,7 +20,6 @@ package dk.statsbiblioteket.medieplatform.contentresolver.lib;
  * #L%
  */
 
-import org.junit.Test;
 
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Content;
 import dk.statsbiblioteket.medieplatform.contentresolver.model.Resource;
@@ -30,7 +29,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+
 
 /**
  * Test combining content resolver.
@@ -58,14 +61,14 @@ public class CombiningContentResolverTest {
         Content result = combiningContentResolver.getContent("testpid");
 
         //Check result
-        assertEquals("Should have the two combined results.", 2, result.getResources().size());
+        assertEquals(2, result.getResources().size(), "Should have the two combined results.");
         Resource resultResource1 = result.getResources().get(0);
         Resource resultResource2 = result.getResources().get(1);
         // Check types
-        assertTrue("Should have one result with first type",
-                   resultResource1.getType().equals("testpid1") || resultResource2.getType().equals("testpid1"));
-        assertTrue("Should have one result with second type",
-                   resultResource1.getType().equals("testpid2") || resultResource2.getType().equals("testpid2"));
+        assertTrue(resultResource1.getType().equals("testpid1") || resultResource2.getType().equals("testpid1"),
+                "Should have one result with first type");
+        assertTrue(resultResource1.getType().equals("testpid2") || resultResource2.getType().equals("testpid2"),
+                "Should have one result with second type");
         // Swap them for easier checking if swapped
         if (!resultResource1.getType().equals("testpid1")) {
             Resource temp = resultResource1;
@@ -73,10 +76,10 @@ public class CombiningContentResolverTest {
             resultResource2 = temp;
         }
         // Check uris
-        assertEquals("Result from first resolver should have two uris", 2, resultResource1.getUris().size());
+        assertEquals(2, resultResource1.getUris().size(), "Result from first resolver should have two uris");
         assertTrue(resultResource1.getUris().contains(new URI("http://example.com/1a")));
         assertTrue(resultResource1.getUris().contains(new URI("http://example.com/1b")));
-        assertEquals("Result from second resolver should have one uri", 1, resultResource2.getUris().size());
+        assertEquals(1, resultResource2.getUris().size(), "Result from second resolver should have one uri");
         assertTrue(resultResource2.getUris().contains(new URI("http://example.com/2a")));
 
     }
