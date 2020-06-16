@@ -22,8 +22,7 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
 
 import static org.junit.Assert.*;
 
-import com.sun.jersey.api.json.JSONJAXBContext;
-import com.sun.jersey.api.json.JSONMarshaller;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.json.JSONObject;
@@ -65,7 +64,7 @@ public class TestContent {
             + "    {\"type\":\n"
             + "      \"test2\",\n"
             + "     \"url\":\n"
-            + "       \"http://example.com/3\"\n"
+            + "       [\"http://example.com/3\"]\n"
             + "    }\n"
             + "  ]\n"
             + "}\n";
@@ -103,9 +102,8 @@ public class TestContent {
 
         // Serialize to JSON
         StringWriter writer = new StringWriter();
-        JSONMarshaller marshaller = new JSONJAXBContext(Content.class).createJSONMarshaller();
-        marshaller.setProperty(JSONMarshaller.FORMATTED, true);
-        marshaller.marshallToJSON(content, writer);
+        ObjectMapper om = new ObjectMapper();
+        om.writeValue(writer, content);
         String result = writer.toString();
 
         // Test for equality

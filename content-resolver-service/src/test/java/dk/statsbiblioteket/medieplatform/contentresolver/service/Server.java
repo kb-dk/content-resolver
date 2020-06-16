@@ -20,11 +20,14 @@ package dk.statsbiblioteket.medieplatform.contentresolver.service;
  * #L%
  */
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.jersey.api.core.ClassNamesResourceConfig;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
+import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 
 /**
  * A stand-alone server disseminating content from the current directory where it is started, as (invalid?) file urls.
@@ -49,7 +52,17 @@ public class Server {
                 Server.class.getClassLoader().getResource("content-resolver-default.xml").getFile());
 
         // Start the server
-        HttpServerFactory.create("http://localhost:9998/content-resolver", new ClassNamesResourceConfig(ContentResolverService.class))
-                .start();
+        JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
+        sf.setResourceClasses(ContentResolverService.class);
+
+        List<Object> providers = new ArrayList<Object>();
+        // add custom providers if any
+        sf.setProviders(providers);
+
+        sf.setResourceProvider(ContentResolverService.class,
+                               new SingletonResourceProvider(new ContentResolverService(), true));
+        sf.setAddress("http://localhost:9998/content-resolver");
+
+        org.apache.cxf.endpoint.Server server = sf.create();
     }
 }
