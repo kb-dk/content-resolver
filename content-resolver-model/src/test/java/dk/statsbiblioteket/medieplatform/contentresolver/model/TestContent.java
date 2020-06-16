@@ -20,17 +20,18 @@ package dk.statsbiblioteket.medieplatform.contentresolver.model;
  * #L%
  */
 
-import static org.junit.Assert.*;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.Arrays;
@@ -88,7 +89,7 @@ public class TestContent {
         // Test for equality
         XMLUnit.setIgnoreWhitespace(true);
         Diff xmlDiff = XMLUnit.compareXML(EXPECTED_XML, result);
-        assertTrue(xmlDiff.toString(), xmlDiff.identical());
+        assertTrue(xmlDiff.identical(), xmlDiff.toString());
     }
 
     /**
