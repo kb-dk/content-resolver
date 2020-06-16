@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -155,7 +156,7 @@ public class DirectoryBasedContentResolver implements ContentResolver {
             directory = new File(directory, pathChar);
             uriPath += pathChar + "/";
         }
-        final String filenameRegex = String.format(filenameRegexPattern, pid);
+        final String filenameRegex = String.format(Locale.ROOT, filenameRegexPattern, pid);
 
 
         List<URI> uris = new ArrayList<>();
@@ -169,7 +170,7 @@ public class DirectoryBasedContentResolver implements ContentResolver {
                 final String filename = candidatePath.getFileName().toString();
                 if (filename.matches(filenameRegex)) {
                     try {
-                        uris.add(new URI(String.format(uriPattern, uriPath + filename, filename)));
+                        uris.add(new URI(String.format(Locale.ROOT, uriPattern, uriPath + filename, filename)));
                     } catch (URISyntaxException e) {
                         // URI is not added
                     }
