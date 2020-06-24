@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+
+    <New id="config" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+        <Arg>contentresolver/configfile</Arg>
+        <Arg type="java.lang.String">
+            ${basedir}/../conf/content-resolver-default.xml
+        </Arg>
+        <Arg type="boolean">true</Arg>
+    </New>
+
+</Configure>
+

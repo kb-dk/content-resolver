@@ -15,7 +15,8 @@ Use maven to build the project i.e. `mvn clean package`
 ## Test 
 To run a local instance of the service do:
 
-```bash
-mvn install
-cd content-resolver-service
-mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=dk.statsbiblioteket.medieplatform.contentresolver.service.Server```
+`mvn jetty:run-war`
+The test instance will then be available on `http://localhost:8080/content-resolver/?_wadl`
+
+Configuration used for the test instance is located in `conf/content-resolver-default.xml`
+
