@@ -7,7 +7,7 @@ It consists of a model for representing content disseminations, a library contai
 For more information see https://sbprojects.statsbiblioteket.dk/display/INFRA/Content+Resolver
 
 ## Requirements
-The project requires Java 8 be build and run. Known to build with OpenJDK 1.8, other JDK's may work
+The project requires Java 8 be build and run. Known to build with OpenJDK 1.8, other JDKs may work
 
 ## Building
 Use maven to build the project i.e. `mvn clean package`
@@ -16,7 +16,7 @@ Use maven to build the project i.e. `mvn clean package`
 To run a local instance of the service do:
 
 `mvn jetty:run-war`
-The test instance will then be available on `http://localhost:8080/content-resolver/?_wadl`
+The test instance will then be available on http://localhost:8080/content-resolver/?_wadl
 
 Configuration used for the test instance is located in `conf/content-resolver-default.xml`
 
