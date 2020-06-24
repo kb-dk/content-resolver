@@ -15,6 +15,7 @@ Use maven to build the project i.e. `mvn clean package`
 ## Test 
 To run a local instance of the service do:
 
-`mvn install
+```bash
+mvn install
 cd content-resolver-service
-mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=dk.statsbiblioteket.medieplatform.contentresolver.service.Server`
+mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=dk.statsbiblioteket.medieplatform.contentresolver.service.Server```
