@@ -51,7 +51,7 @@ openshift.withCluster() { // Use "default" cluster or fallback to OpenShift clus
                     openshift.withProject(projectName) {
 
                         stage("Create build and deploy application") { 
-                            openshift.newBuild("--strategy source", "--binary", "-i kb-infra/kb-s2i-tomcat90", "--name content-resolver")
+                            openshift.newBuild("--strategy source", "--binary", "-i kb-infra/kb-s2i-tomcat85", "--name content-resolver")
                             openshift.startBuild("content-resolver", "--from-dir=.", "--follow")
                             openshift.newApp("content-resolver:latest")
                             openshift.create("route", "edge", "--service=content-resolver")
