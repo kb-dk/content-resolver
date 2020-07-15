@@ -30,8 +30,8 @@
     </licenses>
 
     <organization>
-        <name>The State and University Library, Denmark</name>
-        <url>http://statsbiblioteket.dk</url>
+        <name>The Royal Danish Library</name>
+        <url>http://kb.dk</url>
     </organization>
 
     <repositories>
@@ -48,9 +48,9 @@
     </repositories>
 
     <scm>
-        <url>https://github.com/statsbiblioteket/content-resolver</url>
-        <connection>scm:git:git@github.com/statsbiblioteket/content-resolver.git</connection>
-        <developerConnection>scm:git:git@github.com:statsbiblioteket/content-resolver.git</developerConnection>
+        <url>https://github.com/kb-dk/content-resolver</url>
+        <connection>scm:git:git@github.com/kb-dk/content-resolver.git</connection>
+        <developerConnection>scm:git:git@github.com:kb-dk/content-resolver.git</developerConnection>
       <tag>HEAD</tag>
     </scm>
 
@@ -67,7 +67,7 @@
         <developer>
             <name>Kåre Fiedler Christiansen</name>
             <email>kfc@kb.dk</email>
-            <organization>The Royal Library, Denmark</organization>
+            <organization>The Royal Danish Library</organization>
             <organizationUrl>http://www.kb.dk</organizationUrl>
             <roles>
                 <role>Developer</role>
@@ -76,7 +76,16 @@
         <developer>
             <name>Kim Christensen</name>
             <email>ktc@kb.dk</email>
-            <organization>The Royal Library, Denmark</organization>
+            <organization>The Royal Danish Library</organization>
+            <organizationUrl>http://www.kb.dk</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Toke Eskildsen</name>
+            <email>toes@kb.dk</email>
+            <organization>The Royal Danish Library</organization>
             <organizationUrl>http://www.kb.dk</organizationUrl>
             <roles>
                 <role>Developer</role>
