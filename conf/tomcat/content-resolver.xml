@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context override="true" docBase="${user.home}/services/tomcat-apps/content-resolver-service.war">
+
+    <Environment name="contentresolver/configfile"
+        value="${user.home}/services/conf/crs-configuration.xml"
+        type="java.lang.String"
+        override="false"/>
+
+</Context>
