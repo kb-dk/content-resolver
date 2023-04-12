@@ -7,7 +7,7 @@ It consists of a model for representing content disseminations, a library contai
 For more information see https://sbprojects.statsbiblioteket.dk/display/INFRA/Content+Resolver
 
 ## Requirements
-The project requires Java 8 be build and run. Known to build with OpenJDK 1.8, other JDKs may work
+The project requires Java 11 to be build and run. Known to build with OpenJDK 11, other JDKs may work.
 
 ## Building
 Use maven to build the project i.e. `mvn clean package`
